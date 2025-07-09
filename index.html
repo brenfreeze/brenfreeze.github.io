@@ -31,6 +31,7 @@
             font-size: 1.75rem;
             font-weight: 700;
             color: #111827; /* gray-900 */
+            white-space: nowrap;
         }
         .section-heading::after {
             content: '';
@@ -54,7 +55,7 @@
     <!-- Header & Navigation -->
     <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center floating-nav rounded-full shadow-lg">
-            <a href="#" class="text-xl font-bold font-mono">BA</a>
+            <a href="#" class="text-xl font-bold font-mono mr-8">BA</a>
             <div class="hidden md:flex items-center space-x-8 text-sm">
                 <a href="#about" class="hover:text-gray-900 text-gray-600 transition-colors duration-300">About</a>
                 <a href="#experience" class="hover:text-gray-900 text-gray-600 transition-colors duration-300">Experience</a>
@@ -118,7 +119,7 @@
                 </div>
                 <div class="md:col-span-2 relative group w-full max-w-sm mx-auto">
                     <div class="w-full h-auto rounded-lg overflow-hidden border-2 border-gray-200">
-                         <img src="https://i.imgur.com/i19N33P.jpeg" 
+                         <img src="https://res.cloudinary.com/dhafrnevh/image/upload/v1752062681/B86CCA8A-EC0C-4E94-8E8B-E97683366BB1_1_105_c_swcjck.jpg" 
                              onerror="this.onerror=null;this.src='https://placehold.co/500x500/ffffff/111827?text=Bren+Aviador';"
                              alt="Bren Aviador" class="rounded-lg w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                     </div>
@@ -283,10 +284,8 @@
     <!-- Footer -->
     <footer class="py-8 text-center text-gray-500">
         <div class="flex justify-center space-x-6 mb-4">
-            <!-- Add your actual links here -->
-            <a href="#" class="hover:text-gray-900 transition-colors"><i data-lucide="github"></i></a>
-            <a href="#" class="hover:text-gray-900 transition-colors"><i data-lucide="linkedin"></i></a>
-            <a href="#" class="hover:text-gray-900 transition-colors"><i data-lucide="twitter"></i></a>
+            <a href="https://github.com/brenfreeze" class="hover:text-gray-900 transition-colors"><i data-lucide="github"></i></a>
+            <a href="https://linkedin.com/in/bren-aviador" class="hover:text-gray-900 transition-colors"><i data-lucide="linkedin"></i></a>
         </div>
         <p class="text-sm">Designed & Built by Bren Aviador</p>
     </footer>
