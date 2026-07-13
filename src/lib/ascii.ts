@@ -13,14 +13,16 @@ export function charForLuminance(lum: number, ramp: string = DEFAULT_RAMP): stri
 }
 
 /**
- * Character-grid dimensions for an image. `charAspect` is the width:height
- * ratio of a mono glyph (~0.5), so rows are halved to keep proportions.
+ * Character-grid dimensions for an image. `charAspect` is the rendered
+ * width:height ratio of one monospace cell — IBM Plex Mono's 0.6em advance
+ * over its line-height:1 cell height — so the character grid reproduces the
+ * image's proportions instead of stretching it. Rows scale by this ratio.
  */
 export function gridSize(
   imgWidth: number,
   imgHeight: number,
   columns: number,
-  charAspect = 0.5,
+  charAspect = 0.6,
 ): { cols: number; rows: number } {
   const rows = Math.max(1, Math.round((imgHeight / imgWidth) * columns * charAspect))
   return { cols: columns, rows }

@@ -40,8 +40,10 @@ describe('gridSize', () => {
     expect(gridSize(800, 1000, 72).cols).toBe(72)
   })
 
-  it('halves rows to compensate for tall mono glyphs', () => {
-    expect(gridSize(100, 100, 80).rows).toBe(40)
+  it('scales rows by the mono cell aspect so square images stay square', () => {
+    // a square image at 80 cols → 80 × 0.6 = 48 rows; rendered 0.6em-wide,
+    // 1-line-tall cells make those 48 rows read as a square again
+    expect(gridSize(100, 100, 80).rows).toBe(48)
   })
 
   it('never returns fewer than 1 row', () => {
