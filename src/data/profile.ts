@@ -7,7 +7,7 @@ export const profile = {
   linkedin: 'https://linkedin.com/in/bren-aviador',
   about: [
     "I'm a software engineer based in Las Piñas, Philippines. My path into web development started with curiosity about how things work, and turned into a career of shipping interfaces that are functional and enjoyable to use.",
-    "I've built augmented-reality tools, e-commerce platforms, real-estate marketplaces and brand-management systems — and along the way led teams, mentored developers and taught at a bootcamp.",
+    "I've built augmented-reality tools, e-commerce platforms, real-estate marketplaces and brand-management systems. Along the way I've led teams, mentored developers and taught at a bootcamp.",
   ],
   tech: [
     'TypeScript / JavaScript',

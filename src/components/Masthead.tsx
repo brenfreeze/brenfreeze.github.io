@@ -4,13 +4,17 @@ import { AsciiPortrait } from './AsciiPortrait'
 export function Masthead() {
   return (
     <header className="masthead">
-      <div>
+      <div className="masthead-id">
         <h1>{profile.name}</h1>
         <p className="tagline">
-          {profile.role} — {profile.location}
+          {profile.role}
+          <br />
+          {profile.location}
         </p>
       </div>
-      <AsciiPortrait src="/headshot.jpg" columns={72} />
+      <div className="masthead-portrait">
+        <AsciiPortrait src="/headshot.jpg" columns={72} />
+      </div>
     </header>
   )
 }

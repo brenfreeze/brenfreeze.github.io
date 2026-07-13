@@ -4,21 +4,33 @@ import { Section } from './Section'
 export function Projects() {
   return (
     <Section id="projects" label="Projects">
-      {projects.map((project) => (
-        <div className="row" key={project.name}>
-          <p className="note">{project.tag}</p>
-          <p className="project-line">
-            {project.url ? (
-              <a className="name" href={project.url} target="_blank" rel="noopener noreferrer">
-                {project.name}
-              </a>
-            ) : (
-              <span className="name">{project.name}</span>
-            )}
-            <span className="blurb"> — {project.blurb}</span>
-          </p>
-        </div>
-      ))}
+      <div className="project-grid">
+        {projects.map((project, index) => {
+          const className = index % 4 === 0 ? 'project-cell wide' : 'project-cell'
+          const body = (
+            <>
+              <span className="project-name">{project.name}</span>
+              <span className="project-blurb">{project.blurb}</span>
+              <span className="project-tag">{project.tag}</span>
+            </>
+          )
+          return project.url ? (
+            <a
+              className={className}
+              key={project.name}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {body}
+            </a>
+          ) : (
+            <div className={className} key={project.name}>
+              {body}
+            </div>
+          )
+        })}
+      </div>
     </Section>
   )
 }

@@ -8,10 +8,9 @@ export function Experience() {
         <div className="row" key={`${job.company}-${job.dates}`}>
           <p className="note">{job.dates}</p>
           <div className="entry">
-            <h3>
-              {job.role} <span className="company">· {job.company}</span>
-            </h3>
-            <p>{job.description}</p>
+            <h3>{job.role}</h3>
+            <p className="company">{job.company}</p>
+            <p className="desc">{job.description}</p>
           </div>
         </div>
       ))}

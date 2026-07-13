@@ -14,9 +14,6 @@ importers:
       '@fontsource/ibm-plex-sans':
         specifier: ^5.2.8
         version: 5.2.8
-      '@fontsource/instrument-serif':
-        specifier: ^5.2.8
-        version: 5.2.8
       react:
         specifier: ^19.2.7
         version: 19.2.7
@@ -65,9 +62,6 @@ packages:
 
   '@fontsource/ibm-plex-sans@5.2.8':
     resolution: {integrity: sha512-eztSXjDhPhcpxNIiGTgMebdLP9qS4rWkysuE1V7c+DjOR0qiezaiDaTwQE7bTnG5HxAY/8M43XKDvs3cYq6ZYQ==}
-
-  '@fontsource/instrument-serif@5.2.8':
-    resolution: {integrity: sha512-s+bkz+syj2rO00Rmq9g0P+PwuLig33DR1xDR8pTWmovH1pUjwnncrFk++q9mmOex8fUQ7oW80gPpPDaw7V1MMw==}
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
@@ -672,8 +666,6 @@ snapshots:
   '@fontsource/ibm-plex-mono@5.2.7': {}
 
   '@fontsource/ibm-plex-sans@5.2.8': {}
-
-  '@fontsource/instrument-serif@5.2.8': {}
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
