@@ -4,13 +4,13 @@
     {
       "id": 1,
       "subject": "Task 1: Scaffold Vite + React + TS project",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** A building, committable Vite+React+TS skeleton at the repo root — scaffolded with create-vite, managed with pnpm — replacing the old static index.html.\n\n**Files:**\n- Create (scaffolded): `package.json`, `pnpm-lock.yaml`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`, `vite.config.ts`, `eslint.config.js`, `.gitignore`, `src/*`\n- Modify: `index.html` (template entry, retitled)\n- Create: `src/styles.css`; replace template `src/App.tsx`, `src/main.tsx`\n\n**Acceptance Criteria:**\n- [ ] `pnpm build` exits 0 and produces `dist/index.html`\n- [ ] `pnpm dev` serves a page rendering \"Bren Aviador\"\n- [ ] `node_modules/` and `dist/` are git-ignored\n\n**Verify:** `pnpm build` → `✓ built in …`, `dist/index.html` exists\n\n**Steps:** Scaffold `pnpm create vite@latest tmp-scaffold --template react-ts`, rsync into repo root, rm tmp (create-vite prompts on non-empty dirs); `pnpm install` + `pnpm add` the three @fontsource packages + `pnpm add -D vitest`; remove template boilerplate (src/App.css, src/index.css, src/assets, public/vite.svg); replace index.html/src/main.tsx/src/App.tsx and create src/styles.css exactly as in plan Task 1 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md); add vitest config to vite.config.ts; add \"test\": \"vitest run\" script; `pnpm build`; commit.\n\n```json:metadata\n{\"files\": [\"package.json\", \"pnpm-lock.yaml\", \"tsconfig.json\", \"vite.config.ts\", \"eslint.config.js\", \".gitignore\", \"index.html\", \"src/main.tsx\", \"src/App.tsx\", \"src/styles.css\"], \"verifyCommand\": \"pnpm build && test -f dist/index.html\", \"acceptanceCriteria\": [\"pnpm build exits 0 and produces dist/index.html\", \"dev server renders Bren Aviador\", \"node_modules and dist git-ignored\"], \"modelTier\": \"mechanical\"}\n```"
     },
     {
       "id": 2,
       "subject": "Task 2: Design tokens, fonts, full stylesheet",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         1
       ],
@@ -19,7 +19,7 @@
     {
       "id": 3,
       "subject": "Task 3: Typed content data modules",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         1
       ],
@@ -28,7 +28,7 @@
     {
       "id": 4,
       "subject": "Task 4: ASCII conversion utility with tests (TDD)",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         1
       ],
@@ -37,7 +37,7 @@
     {
       "id": 5,
       "subject": "Task 5: AsciiPortrait component + headshot asset",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         2,
         4
@@ -47,7 +47,7 @@
     {
       "id": 6,
       "subject": "Task 6: Page sections and composition",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         3,
         5
@@ -57,7 +57,7 @@
     {
       "id": 7,
       "subject": "Task 7: Meta tags, favicon, 404 fallback",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         6
       ],
@@ -66,12 +66,12 @@
     {
       "id": 8,
       "subject": "Task 8: GitHub Actions deploy to Pages",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         7
       ],
       "description": "**Goal:** Every push to `master` tests, builds and deploys the site to GitHub Pages; the live site serves the new portfolio.\n\n**Files:**\n- Create: `.github/workflows/deploy.yml`\n\n**Acceptance Criteria:**\n- [ ] Repo Pages source set to \"GitHub Actions\" (`build_type: workflow`)\n- [ ] Workflow run on `master` completes green (test → build → deploy)\n- [ ] `curl -s https://brenfreeze.github.io/` returns HTML containing \"Bren Aviador\" and a Vite `assets/index` bundle reference (not the old Tailwind CDN page)\n\n**Verify:** `gh run watch --exit-status` → success; `curl -s https://brenfreeze.github.io/ | grep -c 'assets/index'` → ≥ 1\n\n**Steps:** Write .github/workflows/deploy.yml exactly as in plan Task 8 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md): push to master + workflow_dispatch, pages/id-token permissions, build job (checkout, pnpm/action-setup + node 22 with pnpm cache, pnpm install --frozen-lockfile, pnpm test, pnpm build, upload-pages-artifact from dist) + deploy job (deploy-pages). Then `gh api repos/brenfreeze/brenfreeze.github.io/pages -X PUT -f build_type=workflow` (POST if 404). Commit, push, `gh run watch`, curl-verify live site (CDN may cache a few minutes — retry with ?nocache=timestamp).\n\n```json:metadata\n{\"files\": [\".github/workflows/deploy.yml\"], \"verifyCommand\": \"gh run watch --exit-status && curl -s https://brenfreeze.github.io/ | grep -c 'assets/index'\", \"acceptanceCriteria\": [\"Pages build_type=workflow\", \"workflow green on master\", \"live site serves Vite build\"], \"modelTier\": \"standard\"}\n```"
     }
   ],
-  "lastUpdated": "2026-07-13T15:45:00+08:00"
+  "lastUpdated": "2026-07-13T20:15:27+08:00"
 }
