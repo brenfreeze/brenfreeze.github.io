@@ -1,0 +1,61 @@
+{
+  "planPath": "docs/superpowers/plans/2026-07-13-portfolio-redesign.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Scaffold Vite + React + TS project",
+      "status": "pending",
+      "description": "**Goal:** A building, committable Vite+React+TS skeleton at the repo root, replacing the old static index.html.\n\n**Files:**\n- Modify: `index.html` (replaced with Vite entry)\n- Create: `package.json`, `tsconfig.json`, `vite.config.ts`, `.gitignore`, `src/main.tsx`, `src/App.tsx`, `src/styles.css` (placeholder)\n\n**Acceptance Criteria:**\n- [ ] `npm run build` exits 0 and produces `dist/index.html`\n- [ ] `npm run dev` serves a page rendering \"Bren Aviador\"\n- [ ] `node_modules/` and `dist/` are git-ignored\n\n**Verify:** `npm run build` → `✓ built in …`, `dist/index.html` exists\n\n**Steps:** Write package.json/tsconfig/vite.config/.gitignore/index.html/src files exactly as in plan Task 1 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md), `npm install`, `npm run build`, commit.\n\n```json:metadata\n{\"files\": [\"package.json\", \"tsconfig.json\", \"vite.config.ts\", \".gitignore\", \"index.html\", \"src/main.tsx\", \"src/App.tsx\", \"src/styles.css\"], \"verifyCommand\": \"npm run build && test -f dist/index.html\", \"acceptanceCriteria\": [\"npm run build exits 0 and produces dist/index.html\", \"dev server renders Bren Aviador\", \"node_modules and dist git-ignored\"], \"modelTier\": \"mechanical\"}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: Design tokens, fonts, full stylesheet",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** The complete token-driven stylesheet (paper/ink, type, margin-notes grid, portrait, responsive collapse) plus self-hosted font imports.\n\n**Files:**\n- Modify: `src/styles.css` (full content in plan Task 2)\n- Modify: `src/main.tsx` (@fontsource imports for Instrument Serif 400/400-italic, IBM Plex Sans 400/500, IBM Plex Mono 400/500)\n\n**Acceptance Criteria:**\n- [ ] Fonts load locally (bundled woff2, no external font hosts)\n- [ ] `npm run build` exits 0\n- [ ] Body renders in IBM Plex Sans on #faf7f2 paper\n\n**Verify:** `npm run build` → exits 0; dev page shows warm paper background\n\n**Steps:** Add the six @fontsource imports to src/main.tsx; replace src/styles.css with the full stylesheet from plan Task 2 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md); build; commit.\n\n```json:metadata\n{\"files\": [\"src/styles.css\", \"src/main.tsx\"], \"verifyCommand\": \"npm run build\", \"acceptanceCriteria\": [\"fonts self-hosted via @fontsource\", \"build exits 0\", \"paper/ink tokens applied to body\"], \"modelTier\": \"mechanical\"}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Typed content data modules",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** All page content (profile, experience, projects, awards) as typed data, refreshed from resume v6.\n\n**Files:**\n- Create: `src/data/profile.ts`, `src/data/experience.ts`, `src/data/projects.ts`, `src/data/awards.ts`\n\n**Acceptance Criteria:**\n- [ ] `npx tsc` exits 0 (strict typecheck)\n- [ ] Experience lists EMAPTA (2025—now) first and condensed \"Earlier\" internships entry last (7 entries)\n- [ ] Projects contains 10 entries; Project Tempo has no URL\n\n**Verify:** `npx tsc` → exits 0\n\n**Steps:** Write the four data files with the exact content from plan Task 3 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md); typecheck; commit.\n\n```json:metadata\n{\"files\": [\"src/data/profile.ts\", \"src/data/experience.ts\", \"src/data/projects.ts\", \"src/data/awards.ts\"], \"verifyCommand\": \"npx tsc\", \"acceptanceCriteria\": [\"strict typecheck passes\", \"7 experience entries EMAPTA first Earlier last\", \"10 projects, Tempo without url\"], \"modelTier\": \"mechanical\"}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: ASCII conversion utility with tests (TDD)",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Pure, unit-tested luminance→character conversion and grid sizing in `src/lib/ascii.ts`.\n\n**Files:**\n- Create: `src/lib/ascii.ts`\n- Test: `src/lib/ascii.test.ts`\n\n**Acceptance Criteria:**\n- [ ] `npm test` passes all tests\n- [ ] Black maps to `@`, white to space; transparent pixels render as space\n- [ ] `gridSize` halves rows to compensate for ~2:1 mono glyph aspect\n\n**Verify:** `npm test` → all tests pass\n\n**Steps:** TDD — write src/lib/ascii.test.ts from plan Task 4 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md), run `npm test` expecting FAIL (cannot resolve ./ascii), write src/lib/ascii.ts (DEFAULT_RAMP ' .:;+*#@', luminance, charForLuminance, gridSize, asciiFromPixels) exactly as in plan, run `npm test` expecting PASS, commit.\n\n```json:metadata\n{\"files\": [\"src/lib/ascii.ts\", \"src/lib/ascii.test.ts\"], \"verifyCommand\": \"npm test\", \"acceptanceCriteria\": [\"all vitest tests pass\", \"black->@ white->space transparent->space\", \"gridSize halves rows\"], \"modelTier\": \"mechanical\"}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 5: AsciiPortrait component + headshot asset",
+      "status": "pending",
+      "blockedBy": [2, 4],
+      "description": "**Goal:** A React component that converts `public/headshot.jpg` to ASCII at runtime, cross-fades to the photo on hover/focus, and falls back to a \"BA\" block.\n\n**Files:**\n- Create: `src/components/AsciiPortrait.tsx`\n- Create: `public/headshot.jpg` (curl from the Cloudinary URL in plan Task 5)\n- Modify: `src/App.tsx` (temporary visual-check wiring)\n\n**Acceptance Criteria:**\n- [ ] Portrait renders as ASCII characters in the browser\n- [ ] Hover/focus reveals the real photo\n- [ ] Missing headshot.jpg shows the \"BA\" fallback without layout errors\n- [ ] `npm run build` exits 0\n\n**Verify:** `npm run build` → exits 0; manual check in `npm run dev`\n\n**Steps:** `mkdir -p public && curl -fL -o public/headshot.jpg '<Cloudinary URL in plan Task 5>'`; write AsciiPortrait.tsx exactly as in plan Task 5 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md) — Image load → canvas cols×rows via gridSize → asciiFromPixels → <pre>, tabIndex figure, img.portrait-photo overlay, failed→BA fallback div; wire into App.tsx; build; commit.\n\n```json:metadata\n{\"files\": [\"src/components/AsciiPortrait.tsx\", \"public/headshot.jpg\", \"src/App.tsx\"], \"verifyCommand\": \"npm run build\", \"acceptanceCriteria\": [\"ASCII renders from headshot\", \"hover/focus reveals photo\", \"BA fallback on missing image\", \"build exits 0\"], \"modelTier\": \"mechanical\"}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 6: Page sections and composition",
+      "status": "pending",
+      "blockedBy": [3, 5],
+      "description": "**Goal:** The full editorial page — nav, masthead, about, experience, projects, awards, contact — rendered from the data modules.\n\n**Files:**\n- Create: `src/components/Nav.tsx`, `src/components/Masthead.tsx`, `src/components/Section.tsx`, `src/components/About.tsx`, `src/components/Experience.tsx`, `src/components/Projects.tsx`, `src/components/Awards.tsx`, `src/components/Contact.tsx`\n- Modify: `src/App.tsx`\n\n**Acceptance Criteria:**\n- [ ] All sections render in order with margin-notes layout (dates/tags in the mono margin)\n- [ ] Anchor nav scrolls to about / experience / projects / contact\n- [ ] Layout collapses to a single column below 720px (notes above content)\n- [ ] `npm run build` exits 0\n\n**Verify:** `npm run build` → exits 0; manual check at 360px/720px/1200px\n\n**Steps:** Write the eight components and App composition exactly as in plan Task 6 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md): Nav (mono anchors), Masthead (h1 + tagline + AsciiPortrait), Section (section-head + children), About (profile.about + tech-list), Experience (rows: note=dates, entry h3 role · company + description), Projects (rows: note=tag, serif-italic linked name — blurb), Awards (rows: note=year, text), Contact (footer: invite, mailto/github/linkedin links, colophon). Build, responsive check, commit.\n\n```json:metadata\n{\"files\": [\"src/components/Nav.tsx\", \"src/components/Masthead.tsx\", \"src/components/Section.tsx\", \"src/components/About.tsx\", \"src/components/Experience.tsx\", \"src/components/Projects.tsx\", \"src/components/Awards.tsx\", \"src/components/Contact.tsx\", \"src/App.tsx\"], \"verifyCommand\": \"npm run build\", \"acceptanceCriteria\": [\"all sections render with margin notes\", \"anchor nav works\", \"single column below 720px\", \"build exits 0\"], \"modelTier\": \"standard\"}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 7: Meta tags, favicon, 404 fallback",
+      "status": "pending",
+      "blockedBy": [6],
+      "description": "**Goal:** Publication hygiene — OG tags, an SVG favicon, and a 404.html copy for Pages.\n\n**Files:**\n- Modify: `index.html` (favicon link + OG tags)\n- Create: `public/favicon.svg`\n- Modify: `package.json` (build script appends `&& cp dist/index.html dist/404.html`)\n\n**Acceptance Criteria:**\n- [ ] `dist/404.html` exists after build and equals `dist/index.html`\n- [ ] Favicon renders in the browser tab\n- [ ] OG title/description/url present in built HTML\n\n**Verify:** `npm run build && diff dist/index.html dist/404.html` → exits 0, no diff output\n\n**Steps:** Write public/favicon.svg (\"BA\" on paper) and add favicon link + og:title/og:description/og:type/og:url metas to index.html head exactly as in plan Task 7 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md); change build script to `tsc && vite build && cp dist/index.html dist/404.html`; verify; commit.\n\n```json:metadata\n{\"files\": [\"index.html\", \"public/favicon.svg\", \"package.json\"], \"verifyCommand\": \"npm run build && diff dist/index.html dist/404.html\", \"acceptanceCriteria\": [\"404.html equals index.html after build\", \"favicon renders\", \"OG tags in built HTML\"], \"modelTier\": \"mechanical\"}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 8: GitHub Actions deploy to Pages",
+      "status": "pending",
+      "blockedBy": [7],
+      "description": "**Goal:** Every push to `master` tests, builds and deploys the site to GitHub Pages; the live site serves the new portfolio.\n\n**Files:**\n- Create: `.github/workflows/deploy.yml`\n\n**Acceptance Criteria:**\n- [ ] Repo Pages source set to \"GitHub Actions\" (`build_type: workflow`)\n- [ ] Workflow run on `master` completes green (test → build → deploy)\n- [ ] `curl -s https://brenfreeze.github.io/` returns HTML containing \"Bren Aviador\" and a Vite `assets/index` bundle reference (not the old Tailwind CDN page)\n\n**Verify:** `gh run watch --exit-status` → success; `curl -s https://brenfreeze.github.io/ | grep -c 'assets/index'` → ≥ 1\n\n**Steps:** Write .github/workflows/deploy.yml exactly as in plan Task 8 (docs/superpowers/plans/2026-07-13-portfolio-redesign.md): push to master + workflow_dispatch, pages/id-token permissions, build job (checkout, node 22 + npm cache, npm ci, npm test, npm run build, upload-pages-artifact from dist) + deploy job (deploy-pages). Then `gh api repos/brenfreeze/brenfreeze.github.io/pages -X PUT -f build_type=workflow` (POST if 404). Commit, push, `gh run watch`, curl-verify live site (CDN may cache a few minutes — retry with ?nocache=timestamp).\n\n```json:metadata\n{\"files\": [\".github/workflows/deploy.yml\"], \"verifyCommand\": \"gh run watch --exit-status && curl -s https://brenfreeze.github.io/ | grep -c 'assets/index'\", \"acceptanceCriteria\": [\"Pages build_type=workflow\", \"workflow green on master\", \"live site serves Vite build\"], \"modelTier\": \"standard\"}\n```"
+    }
+  ],
+  "lastUpdated": "2026-07-13T15:30:00+08:00"
+}
