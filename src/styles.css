@@ -101,6 +101,11 @@ a:hover {
   position: relative;
   margin: 0;
   line-height: 0;
+  /* reserve the ASCII grid's box before conversion finishes (no masthead CLS):
+     72 cols × 0.6em advance × 5.5px, and 54 rows × 5.5px for the bundled
+     724×1086 headshot; a swapped photo with a different aspect simply grows */
+  min-width: calc(72 * 0.6 * 5.5px);
+  min-height: calc(54 * 5.5px);
 }
 .portrait pre {
   font-family: var(--mono);

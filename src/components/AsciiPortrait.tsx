@@ -51,7 +51,7 @@ export function AsciiPortrait({ src, columns = 72 }: AsciiPortraitProps) {
   }
 
   return (
-    <figure className="portrait" tabIndex={0}>
+    <figure className="portrait" tabIndex={0} aria-label="Portrait of Bren Aviador">
       <pre aria-hidden="true">{ascii ?? ''}</pre>
       <img className="portrait-photo" src={src} alt="Portrait of Bren Aviador" />
     </figure>
