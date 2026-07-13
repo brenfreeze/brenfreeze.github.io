@@ -6,7 +6,7 @@
 
 **Architecture:** Single-page React app; content lives in typed data modules, presentation in small components, all styling in one token-driven global stylesheet. The ASCII portrait's math is a pure tested utility wrapped by a thin canvas component. CI builds and deploys static files to Pages.
 
-**Tech Stack:** Vite, React 19, TypeScript, Vitest, @fontsource (Instrument Serif, IBM Plex Sans, IBM Plex Mono), GitHub Actions + actions/deploy-pages.
+**Tech Stack:** Vite (scaffolded with create-vite), React 19, TypeScript, pnpm, Vitest, @fontsource (Instrument Serif, IBM Plex Sans, IBM Plex Mono), GitHub Actions + actions/deploy-pages.
 
 **User decisions (already made):**
 - Design: warm-paper monotone editorial layout from the user's Claude Design direction — NOT the synced Modernist/Nocturne systems.
@@ -15,6 +15,7 @@
 - ASCII headshot: runtime canvas conversion of `public/headshot.jpg`; swapping the photo = replacing that file; hover reveals the real photo.
 - Content refreshed from resume v6: EMAPTA current role (Aug 2025—), KMC ended Jul 2025, internships condensed into one "Earlier" entry; 10 projects.
 - Spec: `docs/superpowers/specs/2026-07-13-portfolio-redesign-design.md` (approved).
+- Scaffold with `pnpm create vite@latest` (not hand-written config); pnpm as the package manager (requested at execution handoff).
 
 ---
 
@@ -22,7 +23,7 @@
 
 ```
 index.html                      # Vite entry (replaces the old static page)
-package.json / tsconfig.json / vite.config.ts / .gitignore
+package.json / pnpm-lock.yaml / tsconfig*.json / vite.config.ts / eslint.config.js / .gitignore
 public/headshot.jpg             # the swappable portrait photo
 public/favicon.svg              # "BA" mark (Task 7)
 .github/workflows/deploy.yml    # build + deploy to Pages (Task 8)
@@ -40,99 +41,50 @@ src/data/{profile,experience,projects,awards}.ts
 
 ### Task 1: Scaffold Vite + React + TypeScript project
 
-**Goal:** A building, committable Vite+React+TS skeleton at the repo root, replacing the old static index.html.
+**Goal:** A building, committable Vite+React+TS skeleton at the repo root — scaffolded with create-vite, managed with pnpm — replacing the old static index.html.
 
 **Files:**
-- Modify: `index.html` (replaced with Vite entry)
-- Create: `package.json`, `tsconfig.json`, `vite.config.ts`, `.gitignore`, `src/main.tsx`, `src/App.tsx`, `src/styles.css` (placeholder)
+- Create (scaffolded): `package.json`, `pnpm-lock.yaml`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`, `vite.config.ts`, `eslint.config.js`, `.gitignore`, `src/*`
+- Modify: `index.html` (template entry, retitled — replaces the old static page)
+- Create: `src/styles.css`; replace template `src/App.tsx`, `src/main.tsx`
 
 **Acceptance Criteria:**
-- [ ] `npm run build` exits 0 and produces `dist/index.html`
-- [ ] `npm run dev` serves a page rendering "Bren Aviador"
+- [ ] `pnpm build` exits 0 and produces `dist/index.html`
+- [ ] `pnpm dev` serves a page rendering "Bren Aviador"
 - [ ] `node_modules/` and `dist/` are git-ignored
 
-**Verify:** `npm run build` → `✓ built in …`, `dist/index.html` exists
+**Verify:** `pnpm build` → `✓ built in …`, `dist/index.html` exists
 
 **Steps:**
 
-- [ ] **Step 1: Write `package.json`**
+- [ ] **Step 1: Scaffold with create-vite and merge into the repo root**
 
-```json
-{
-  "name": "brenfreeze.github.io",
-  "private": true,
-  "version": "2.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
-  "dependencies": {
-    "@fontsource/ibm-plex-mono": "^5.2.5",
-    "@fontsource/ibm-plex-sans": "^5.2.5",
-    "@fontsource/instrument-serif": "^5.2.5",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.0",
-    "@vitejs/plugin-react": "^4.5.0",
-    "typescript": "~5.8.0",
-    "vite": "^6.3.5",
-    "vitest": "^3.2.0"
-  }
-}
+create-vite prompts interactively when the target directory is non-empty, so scaffold into a temp dir and merge:
+
+```bash
+cd /Users/bren/brenfreeze.github.io
+pnpm create vite@latest tmp-scaffold --template react-ts
+rsync -a tmp-scaffold/ ./
+rm -rf tmp-scaffold
 ```
 
-- [ ] **Step 2: Write `tsconfig.json`**
+Note: `rsync` overwrites the old static `index.html` with the template entry — intended; the old page stays in git history.
 
-```json
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "types": ["vite/client"]
-  },
-  "include": ["src"]
-}
+- [ ] **Step 2: Install dependencies**
+
+```bash
+pnpm install
+pnpm add @fontsource/instrument-serif @fontsource/ibm-plex-sans @fontsource/ibm-plex-mono
+pnpm add -D vitest
 ```
 
-- [ ] **Step 3: Write `vite.config.ts`**
+- [ ] **Step 3: Remove template boilerplate**
 
-```ts
-/// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts'],
-  },
-})
+```bash
+rm -rf src/App.css src/index.css src/assets public/vite.svg
 ```
 
-- [ ] **Step 4: Write `.gitignore`**
-
-```
-node_modules/
-dist/
-```
-
-- [ ] **Step 5: Replace `index.html` with the Vite entry**
+- [ ] **Step 4: Replace `index.html`** (full file)
 
 ```html
 <!doctype html>
@@ -154,7 +106,7 @@ dist/
 </html>
 ```
 
-- [ ] **Step 6: Write `src/main.tsx`**
+- [ ] **Step 5: Replace `src/main.tsx`**
 
 ```tsx
 import { StrictMode } from 'react'
@@ -169,7 +121,9 @@ createRoot(document.getElementById('root')!).render(
 )
 ```
 
-- [ ] **Step 7: Write placeholder `src/App.tsx` and empty `src/styles.css`**
+- [ ] **Step 6: Replace `src/App.tsx` and create `src/styles.css`**
+
+`src/App.tsx`:
 
 ```tsx
 export function App() {
@@ -183,19 +137,37 @@ export function App() {
 /* tokens + component styles arrive in Task 2 */
 ```
 
-- [ ] **Step 8: Install and build**
+- [ ] **Step 7: Add vitest to `vite.config.ts`** (full file)
 
-Run: `npm install`
-Expected: exits 0, lockfile created.
+```ts
+/// <reference types="vitest/config" />
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-Run: `npm run build`
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.ts'],
+  },
+})
+```
+
+- [ ] **Step 8: Add test scripts to `package.json`** (keep the template's `"build": "tsc -b && vite build"`)
+
+```json
+    "test": "vitest run",
+    "test:watch": "vitest"
+```
+
+- [ ] **Step 9: Verify and commit**
+
+Run: `pnpm build`
 Expected: `✓ built in …` and `dist/index.html` exists.
 
-- [ ] **Step 9: Commit**
-
 ```bash
-git add package.json package-lock.json tsconfig.json vite.config.ts .gitignore index.html src/
-git commit -m "feat: scaffold Vite + React + TypeScript app"
+git add -A
+git commit -m "feat: scaffold Vite + React + TypeScript app (create-vite, pnpm)"
 ```
 
 ---
@@ -210,10 +182,10 @@ git commit -m "feat: scaffold Vite + React + TypeScript app"
 
 **Acceptance Criteria:**
 - [ ] Fonts load locally (network tab shows /node_modules or bundled woff2, no external font hosts)
-- [ ] `npm run build` exits 0
+- [ ] `pnpm build` exits 0
 - [ ] Body renders in IBM Plex Sans on `#faf7f2` paper
 
-**Verify:** `npm run build` → exits 0; `npm run dev` → page shows warm paper background
+**Verify:** `pnpm build` → exits 0; `pnpm dev` → page shows warm paper background
 
 **Steps:**
 
@@ -500,7 +472,7 @@ a:hover {
 
 - [ ] **Step 3: Verify and commit**
 
-Run: `npm run build`
+Run: `pnpm build`
 Expected: exits 0.
 
 ```bash
@@ -518,11 +490,11 @@ git commit -m "feat: add design tokens, fonts and full stylesheet"
 - Create: `src/data/profile.ts`, `src/data/experience.ts`, `src/data/projects.ts`, `src/data/awards.ts`
 
 **Acceptance Criteria:**
-- [ ] `npx tsc` exits 0 (all modules typecheck strictly)
+- [ ] `pnpm exec tsc -b` exits 0 (all modules typecheck strictly)
 - [ ] Experience lists EMAPTA (2025—now) first and a condensed "Earlier" internships entry last
 - [ ] Projects contains 10 entries; Project Tempo has no URL
 
-**Verify:** `npx tsc` → exits 0
+**Verify:** `pnpm exec tsc -b` → exits 0
 
 **Steps:**
 
@@ -656,7 +628,7 @@ export const awards: Award[] = [
 
 - [ ] **Step 5: Verify and commit**
 
-Run: `npx tsc`
+Run: `pnpm exec tsc -b`
 Expected: exits 0.
 
 ```bash
@@ -675,11 +647,11 @@ git commit -m "feat: add typed content data from resume v6"
 - Test: `src/lib/ascii.test.ts`
 
 **Acceptance Criteria:**
-- [ ] `npm test` passes all tests
+- [ ] `pnpm test` passes all tests
 - [ ] Black maps to `@`, white to space; transparent pixels render as paper (space)
 - [ ] `gridSize` halves rows to compensate for ~2:1 mono glyph aspect
 
-**Verify:** `npm test` → all tests pass
+**Verify:** `pnpm test` → all tests pass
 
 **Steps:**
 
@@ -760,7 +732,7 @@ describe('asciiFromPixels', () => {
 
 - [ ] **Step 2: Run tests to verify they fail**
 
-Run: `npm test`
+Run: `pnpm test`
 Expected: FAIL — cannot resolve `./ascii`.
 
 - [ ] **Step 3: Write the implementation — `src/lib/ascii.ts`**
@@ -820,7 +792,7 @@ export function asciiFromPixels(
 
 - [ ] **Step 4: Run tests to verify they pass**
 
-Run: `npm test`
+Run: `pnpm test`
 Expected: PASS — all tests green.
 
 - [ ] **Step 5: Commit**
@@ -844,9 +816,9 @@ git commit -m "feat: add tested ASCII conversion utility"
 - [ ] Portrait renders as ASCII characters in the browser
 - [ ] Hover/focus reveals the real photo
 - [ ] Renaming headshot.jpg away shows the "BA" fallback without layout errors
-- [ ] `npm run build` exits 0
+- [ ] `pnpm build` exits 0
 
-**Verify:** `npm run build` → exits 0; manual check in `npm run dev`
+**Verify:** `pnpm build` → exits 0; manual check in `pnpm dev`
 
 **Steps:**
 
@@ -943,8 +915,8 @@ export function App() {
 
 - [ ] **Step 4: Verify**
 
-Run: `npm run dev` — portrait renders as ink characters on paper; hovering fades in the photo.
-Run: `npm run build`
+Run: `pnpm dev` — portrait renders as ink characters on paper; hovering fades in the photo.
+Run: `pnpm build`
 Expected: exits 0.
 
 - [ ] **Step 5: Commit**
@@ -968,9 +940,9 @@ git commit -m "feat: add runtime ASCII portrait with hover reveal"
 - [ ] All sections render in order with margin-notes layout (dates/tags in the mono margin)
 - [ ] Anchor nav scrolls to about / experience / projects / contact
 - [ ] Layout collapses to a single column below 720px (notes above content)
-- [ ] `npm run build` exits 0
+- [ ] `pnpm build` exits 0
 
-**Verify:** `npm run build` → exits 0; manual check at 360px/720px/1200px in dev tools
+**Verify:** `pnpm build` → exits 0; manual check at 360px/720px/1200px in dev tools
 
 **Steps:**
 
@@ -1200,10 +1172,10 @@ export function App() {
 
 - [ ] **Step 10: Verify**
 
-Run: `npm run build`
+Run: `pnpm build`
 Expected: exits 0.
 
-Run: `npm run dev` — check all sections render, anchors scroll, and the layout collapses to one column at 360px (device toolbar).
+Run: `pnpm dev` — check all sections render, anchors scroll, and the layout collapses to one column at 360px (device toolbar).
 
 - [ ] **Step 11: Commit**
 
@@ -1228,7 +1200,7 @@ git commit -m "feat: compose editorial margin-notes page from content data"
 - [ ] Favicon renders in the browser tab
 - [ ] OG title/description/url present in built HTML
 
-**Verify:** `npm run build && diff dist/index.html dist/404.html` → exits 0, no diff output
+**Verify:** `pnpm build && diff dist/index.html dist/404.html` → exits 0, no diff output
 
 **Steps:**
 
@@ -1257,12 +1229,12 @@ git commit -m "feat: compose editorial margin-notes page from content data"
 - [ ] **Step 3: Update the build script in `package.json`**
 
 ```json
-    "build": "tsc && vite build && cp dist/index.html dist/404.html",
+    "build": "tsc -b && vite build && cp dist/index.html dist/404.html",
 ```
 
 - [ ] **Step 4: Verify and commit**
 
-Run: `npm run build && diff dist/index.html dist/404.html`
+Run: `pnpm build && diff dist/index.html dist/404.html`
 Expected: build exits 0; diff prints nothing.
 
 ```bash
@@ -1312,13 +1284,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
