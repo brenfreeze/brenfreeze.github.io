@@ -105,6 +105,7 @@ a:hover {
      72 cols × 0.6em advance × 5.5px, and 65 rows × 5.5px for the bundled
      724×1086 headshot (gridSize at charAspect 0.6); a taller photo grows,
      a wider one leaves a little slack the hover photo still covers */
+  width: min-content;
   min-width: calc(72 * 0.6 * 5.5px);
   min-height: calc(65 * 5.5px);
 }
@@ -174,6 +175,15 @@ a:hover {
   color: var(--ink-faint);
   margin: 0;
   padding-top: 0.3rem; /* optically aligns mono notes with serif titles */
+}
+
+/* rows whose margin note is an empty placeholder (About, Contact) drop the
+   note column entirely so the content spans the full container */
+.row:has(> .note[aria-hidden='true']) {
+  grid-template-columns: 1fr;
+}
+.note[aria-hidden='true'] {
+  display: none;
 }
 
 .entry h3 {
