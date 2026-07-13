@@ -3,7 +3,7 @@
   --paper: #faf7f2;
   --ink: #1c1a17;
   --ink-soft: rgba(28, 26, 23, 0.74);
-  --ink-faint: rgba(28, 26, 23, 0.52);
+  --ink-faint: rgba(28, 26, 23, 0.62);
   --rule: rgba(28, 26, 23, 0.15);
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
@@ -109,6 +109,7 @@ a:hover {
   letter-spacing: 0;
   margin: 0;
   color: var(--ink);
+  -webkit-user-select: none;
   user-select: none;
 }
 .portrait-photo {
