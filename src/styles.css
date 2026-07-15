@@ -4,7 +4,10 @@
   --ink: #171717;
   --ink-soft: #4a4a48;
   --line: #171717;
+  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --measure: 62ch;
+  /* one ASCII portrait cell; the portrait box scales from this */
+  --cell: 7.5px;
   color-scheme: light dark;
 }
 
@@ -49,11 +52,7 @@ a {
   color: inherit;
 }
 
-h1,
-h2,
 h3,
-.wordmark,
-.nav,
 .note,
 .tagline,
 .company,
@@ -61,45 +60,91 @@ h3,
 .project-name,
 .project-tag,
 .award-year,
-.invite,
 .links,
 .colophon {
   font-family: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
 }
 
+h1,
+h2,
+.invite {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+
 .page {
   max-width: 68rem;
   margin: 0 auto;
-  padding: 0 1.25rem 4rem;
+  padding: 1.5rem 1.25rem 7rem; /* bottom clearance for the island nav */
 }
 
-/* nav */
-.nav-bar {
+/* island nav: the one pill-shaped object on an otherwise radius-0 page */
+.island {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  height: 3.5rem;
-  border-bottom: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 999px;
+  padding: 0.3125rem;
+  font-family: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
   font-size: 0.8125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
 }
-.wordmark {
+.island-toggle {
+  font: inherit;
   font-weight: 700;
+  letter-spacing: 0.06em;
+  background: none;
+  border: none;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.5rem 0.875rem;
+  cursor: pointer;
 }
-.nav {
+.island-items {
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.island-items-inner {
+  overflow: hidden;
+  min-width: 0;
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 1.125rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
-.nav a {
+.island.open .island-items,
+.island:hover .island-items,
+.island:focus-within .island-items {
+  grid-template-columns: 1fr;
+}
+.island.open .island-items-inner,
+.island:hover .island-items-inner,
+.island:focus-within .island-items-inner {
+  opacity: 1;
+}
+.island-items-inner a {
   text-decoration: none;
-  color: var(--ink-soft);
+  padding-block: 0.5rem;
 }
-.nav a:hover {
-  color: var(--ink);
+.island-items-inner a:last-child {
+  padding-right: 0.875rem;
+}
+.island-items-inner a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+.island :focus-visible {
+  outline: 2px solid var(--bg);
+  outline-offset: 2px;
 }
 
 /* masthead */
@@ -107,11 +152,10 @@ h3,
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   border: 1px solid var(--line);
-  border-top: none;
-  margin-bottom: 3.5rem;
+  min-height: calc(100dvh - 3rem);
 }
 .masthead-id {
-  padding: 2.5rem 2rem;
+  padding: 3.5rem 3rem;
   border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
@@ -119,25 +163,23 @@ h3,
   gap: 2rem;
 }
 .masthead h1 {
-  font-weight: 700;
-  font-size: clamp(2.5rem, 7.5vw, 4.75rem);
+  font-size: clamp(4rem, 12vw, 9rem);
   line-height: 0.95;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  letter-spacing: -0.02em;
   margin: 0;
   overflow-wrap: break-word;
 }
 .masthead .tagline {
-  font-size: 0.875rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--ink-soft);
   margin: 0;
 }
 .masthead-portrait {
   display: grid;
   place-items: center;
-  padding: 1.25rem;
+  padding: 2rem;
 }
 
 /* ascii portrait */
@@ -146,16 +188,16 @@ h3,
   margin: 0;
   line-height: 0;
   /* reserve the ASCII grid's box before conversion finishes (no masthead CLS):
-     72 cols × 0.6em advance × 5.5px, and 65 rows × 5.5px for the bundled
+     72 cols × 0.6em advance × --cell, and 65 rows × --cell for the bundled
      724×1086 headshot (gridSize at charAspect 0.6); a taller photo grows,
      a wider one leaves a little slack the hover photo still covers */
   width: min-content;
-  min-width: calc(72 * 0.6 * 5.5px);
-  min-height: calc(65 * 5.5px);
+  min-width: calc(72 * 0.6 * var(--cell));
+  min-height: calc(65 * var(--cell));
 }
 .portrait pre {
   font-family: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
-  font-size: 5.5px;
+  font-size: var(--cell);
   line-height: 1;
   letter-spacing: 0;
   margin: 0;
@@ -188,30 +230,35 @@ h3,
   line-height: 1;
 }
 
-/* sections */
+/* sections: each one is a full-viewport moment */
 .section {
-  padding-block: 0 3.5rem;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 6rem;
 }
 .section-head {
   border-bottom: 1px solid var(--line);
-  padding-bottom: 0.625rem;
+  padding-bottom: 1rem;
   margin-bottom: 0;
 }
 .section-head h2 {
-  font-weight: 700;
-  font-size: clamp(1.375rem, 3vw, 1.75rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
   margin: 0;
 }
 
 /* about */
 .about {
-  padding-top: 1.5rem;
+  padding-top: 2.5rem;
 }
 .about p {
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
   color: var(--ink-soft);
+  font-size: 1.0625rem;
+  line-height: 1.7;
   max-width: var(--measure);
 }
 .tech-list {
@@ -232,8 +279,8 @@ h3,
 .row {
   display: grid;
   grid-template-columns: 7rem minmax(0, 1fr);
-  gap: 0.25rem 2rem;
-  padding-block: 1.375rem;
+  gap: 0.25rem 2.5rem;
+  padding-block: 1.75rem;
   border-bottom: 1px solid var(--line);
 }
 .note {
@@ -275,9 +322,9 @@ h3,
 .project-cell {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-height: 10rem;
-  padding: 1.25rem;
+  gap: 0.625rem;
+  min-height: 12rem;
+  padding: 1.5rem;
   background: var(--bg);
   text-decoration: none;
 }
@@ -325,7 +372,7 @@ a.project-cell:active {
   border-top: none;
 }
 .award-cell {
-  padding: 1.25rem;
+  padding: 1.5rem;
   background: var(--bg);
 }
 .award-year {
@@ -341,15 +388,11 @@ a.project-cell:active {
 }
 
 /* footer / contact */
-.footer {
-  padding-bottom: 0;
-}
 .footer .invite {
-  font-weight: 500;
-  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
-  line-height: 1.35;
-  margin: 1.5rem 0 1.75rem;
-  max-width: 32ch;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.15;
+  margin: 2.5rem 0 2rem;
+  max-width: 24ch;
 }
 .footer .links {
   display: flex;
@@ -378,13 +421,8 @@ a.project-cell:active {
 
 /* responsive */
 @media (max-width: 45rem) {
-  .wordmark {
-    display: none;
-  }
-  .nav {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.75rem;
+  :root {
+    --cell: 5.5px;
   }
   .masthead {
     grid-template-columns: 1fr;
@@ -392,7 +430,11 @@ a.project-cell:active {
   .masthead-id {
     border-right: none;
     border-bottom: 1px solid var(--line);
-    padding: 1.5rem 1.25rem;
+    padding: 2rem 1.5rem;
+  }
+  .section {
+    min-height: 0;
+    padding-block: 4rem;
   }
   .row {
     grid-template-columns: 1fr;
@@ -424,7 +466,9 @@ a.project-cell:active {
   html {
     scroll-behavior: auto;
   }
-  .portrait-photo {
+  .portrait-photo,
+  .island-items,
+  .island-items-inner {
     transition: none;
   }
 }

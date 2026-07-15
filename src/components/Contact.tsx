@@ -17,7 +17,8 @@ export function Contact() {
         </a>
       </div>
       <p className="colophon">
-        Designed &amp; built by Bren Aviador · set in IBM Plex Mono &amp; IBM Plex Sans
+        Designed &amp; built by Bren Aviador · set in Instrument Serif, IBM Plex Mono &amp; IBM
+        Plex Sans
       </p>
     </footer>
   )
